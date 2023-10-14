@@ -6,6 +6,9 @@ const Form = styled.form`
   width: 54rem;
   padding-bottom: 3.4rem;
   position: relative;
+  @media screen and (max-width: 31em) {
+    width: 32.7rem;
+  }
 `;
 
 export default Form;

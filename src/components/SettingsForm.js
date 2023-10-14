@@ -31,6 +31,12 @@ const FromHeading = styled.div`
   padding-left: 4rem;
   font-family: ${(props) => fontFamiliy[props.font]};
   font-weight: ${(props) => fontWeights[props.font]};
+  @media screen and (max-width: 31em) {
+    padding-top: 2.4rem;
+    padding-left: 2.4rem;
+    padding-bottom: 2.4rem;
+    font-size: 2rem;
+  }
 `;
 
 const TimeContainer = styled.div`
@@ -38,6 +44,10 @@ const TimeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.54rem;
+  @media screen and (max-width: 31em) {
+    margin: 2.4rem 2.4rem 0 2.4rem;
+    gap: 8px;
+  }
 `;
 
 const Heading = styled.div`
@@ -49,6 +59,9 @@ const Heading = styled.div`
   text-transform: uppercase;
   font-family: ${(props) => fontFamiliy[props.font]};
   font-weight: ${(props) => fontWeights[props.font]};
+  @media screen and (max-width: 31em) {
+    text-align: center;
+  }
 `;
 
 const TimeRow = styled.div`
@@ -57,12 +70,21 @@ const TimeRow = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #e3e1e1;
   padding-bottom: 2.4rem;
+  @media screen and (max-width: 31em) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const TimeType = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  @media screen and (max-width: 31em) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;
 
 const TimeTypeHeading = styled.div`
@@ -81,6 +103,10 @@ const FontRow = styled.div`
   align-items: center;
   border-bottom: 1px solid #e3e1e1;
   padding-bottom: 2.4rem;
+  @media screen and (max-width: 31em) {
+    flex-direction: column;
+    gap: 1.8rem;
+  }
 `;
 
 const SelectFont = styled.div`
@@ -130,6 +156,10 @@ const ColorRow = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 2.4rem;
+  @media screen and (max-width: 31em) {
+    flex-direction: column;
+    gap: 1.8rem;
+  }
 `;
 
 const SelectColorButton = styled.div`

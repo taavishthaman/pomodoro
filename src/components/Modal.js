@@ -45,6 +45,10 @@ const Button = styled.button`
     width: 2.4rem;
     height: 2.4rem;
   }
+  @media screen and (max-width: 31em) {
+    top: 2.9rem;
+    right: 2.4rem;
+  }
 `;
 
 const ModalContext = createContext();

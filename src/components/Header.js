@@ -13,6 +13,12 @@ const StyledHeader = styled.div`
   line-height: normal;
   font-family: ${(props) => fontFamiliy[props.font]};
   font-weight: ${(props) => fontWeights[props.font]};
+  @media screen and (max-width: 50em) {
+    padding-top: 8rem;
+  }
+  @media screen and (max-width: 31em) {
+    padding-top: 3.2rem;
+  }
 `;
 
 function Header() {

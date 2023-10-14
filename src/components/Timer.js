@@ -20,6 +20,12 @@ const StyledTimerContainer = styled.div`
   align-items: center;
   margin-top: 4.5rem;
   flex-direction: column;
+  @media screen and (max-width: 50em) {
+    margin-top: 10.9em;
+  }
+  @media screen and (max-width: 31em) {
+    margin-top: 4.8em;
+  }
 `;
 
 const StyledTimer = styled.div`
@@ -31,6 +37,10 @@ const StyledTimer = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
+  @media screen and (max-width: 31em) {
+    height: 30rem;
+    width: 30rem;
+  }
 `;
 
 const StyledTimerInner = styled.div`
@@ -38,6 +48,10 @@ const StyledTimerInner = styled.div`
   width: 36.6rem;
   border-radius: 36.6rem;
   background-color: var(--color-dark);
+  @media screen and (max-width: 31em) {
+    height: 26.7rem;
+    width: 26.7rem;
+  }
 `;
 
 const ClockContainer = styled.div`
@@ -51,11 +65,13 @@ const StyledClock = styled.div`
   color: var(--color-text-primary);
   font-size: 10rem;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
   letter-spacing: -5px;
   font-family: ${(props) => fontFamiliy[props.font]};
   font-weight: ${(props) => fontWeights[props.font]};
+  @media screen and (max-width: 31em) {
+    font-size: 8rem;
+  }
 `;
 
 const StatusText = styled.div`
@@ -72,11 +88,20 @@ const StatusText = styled.div`
   }
   font-family: ${(props) => fontFamiliy[props.font]};
   font-weight: ${(props) => fontWeights[props.font]};
+  @media screen and (max-width: 31em) {
+    font-size: 1.4rem;
+  }
 `;
 
 const SettingsImg = styled.img`
   padding-top: 6.3rem;
   cursor: pointer;
+  @media screen and (max-width: 50em) {
+    padding-top: 14.4em;
+  }
+  @media screen and (max-width: 31em) {
+    padding-top: 7.9rem;
+  }
 `;
 
 function Timer() {
