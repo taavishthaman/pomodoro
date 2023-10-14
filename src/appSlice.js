@@ -3,14 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pomodoroTime: 1500,
   shortBreakTime: 300,
-  longBreakTime: 1800,
+  longBreakTime: 900,
   active: "pomodoro",
   currentPomodoroTime: 1500,
   currentShortBreakTime: 300,
-  currentLongBreakTime: 1800,
+  currentLongBreakTime: 900,
   timerState: "paused", //Can be running, paused, finished
   theme: "primary",
   timerId: null,
+  font: "first",
 };
 
 const appSlice = createSlice({
@@ -44,6 +45,12 @@ const appSlice = createSlice({
     setTimerId(state, action) {
       state.timerId = action.payload;
     },
+    setTheme(state, action) {
+      state.theme = action.payload;
+    },
+    setFont(state, action) {
+      state.font = action.payload;
+    },
   },
 });
 
@@ -57,6 +64,8 @@ export const {
   setCurrent,
   setTimerState,
   setTimerId,
+  setTheme,
+  setFont,
 } = appSlice.actions;
 
 export default appSlice.reducer;

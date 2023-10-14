@@ -3,7 +3,21 @@ import { useForm } from "react-hook-form";
 import Form from "./Form";
 import NumericInput from "./NumericInput";
 import { colors } from "../utils/colors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { fontFamiliy, fontWeights } from "../utils/fonts";
+import TickIcon from "../assets/icons/tick.svg";
+import {
+  setPomodoroTime,
+  setPomodoroCurrentTime,
+  setShortTime,
+  setShortCurrentTime,
+  setLongTime,
+  setLongCurrentTime,
+  setTheme,
+  setFont,
+} from "../appSlice";
+import { clamp } from "../utils/clamp";
 
 const FromHeading = styled.div`
   color: var(--color-dark);
@@ -15,6 +29,8 @@ const FromHeading = styled.div`
   border-bottom: 1px solid #e3e1e1;
   padding-top: 3.4rem;
   padding-left: 4rem;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 const TimeContainer = styled.div`
@@ -28,10 +44,11 @@ const Heading = styled.div`
   color: var(--color-dark);
   font-size: 1.3rem;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
   letter-spacing: 5px;
   text-transform: uppercase;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 const TimeRow = styled.div`
@@ -52,9 +69,10 @@ const TimeTypeHeading = styled.div`
   color: var(--color-dark);
   font-size: 1.2rem;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
   opacity: 0.4;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 const FontRow = styled.div`
@@ -72,6 +90,15 @@ const SelectFont = styled.div`
   align-items: center;
 `;
 
+const ButtonBorder = styled.div`
+  padding: 5px;
+  transition: all 0s;
+  &:hover {
+    border: 1px solid var(--color-btn-background);
+    border-radius: 10rem;
+  }
+`;
+
 const SelectFontButton = styled.div`
   height: 4rem;
   width: 4rem;
@@ -84,6 +111,18 @@ const SelectFontButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  font-size: 1.5rem;
+  color: ${(props) =>
+    props.selected === true
+      ? "var(--color-white)"
+      : "var(--color-text-secondary)"};
+
+  font-family: ${(props) => fontFamiliy[props.type]};
+  font-weight: ${(props) => fontWeights[props.type]};
+
+  /* &:hover {
+    border: 1px solid var(--color-btn-background);
+  } */
 `;
 
 const ColorRow = styled.div`
@@ -129,6 +168,8 @@ const ApplyBtn = styled.button`
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
   &:hover {
     &:before {
       background: rgba(255, 255, 255, 0.203);
@@ -144,52 +185,141 @@ const ApplyBtn = styled.button`
   }
 `;
 
-function SettingsForm() {
-  const { pomodoroTime, shortBreakTime, longBreakTime, theme } = useSelector(
-    (state) => state.app
-  );
+const Tick = styled.img`
+  height: 1.4rem;
+  width: 1.4rem;
+`;
 
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+function SettingsForm({ onCloseModal }) {
+  const { pomodoroTime, shortBreakTime, longBreakTime, theme, font } =
+    useSelector((state) => state.app);
+  const dispatch = useDispatch();
+
+  const { register, handleSubmit } = useForm({});
+
+  const [newFont, setNewFont] = useState(font);
+  const [newTheme, setNewTheme] = useState(theme);
+
   function onSubmit(data) {
-    console.log("Data ", data);
+    //Update the redux here
+    let { pomodoro, short, long } = data;
+    pomodoro = clamp(pomodoro, 1, 60);
+    short = clamp(short, 1, 60);
+    long = clamp(long, 1, 60);
+    dispatch(setPomodoroTime(pomodoro * 60));
+    dispatch(setPomodoroCurrentTime(pomodoro * 60));
+    dispatch(setShortTime(short * 60));
+    dispatch(setShortCurrentTime(short * 60));
+    dispatch(setLongTime(long * 60));
+    dispatch(setLongCurrentTime(long * 60));
+    dispatch(setTheme(newTheme));
+    dispatch(setFont(newFont));
+
+    //Save to local storage
+
+    onCloseModal?.();
   }
+
+  function onError(error) {
+    //console.log("Here", error);
+  }
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FromHeading>Settings</FromHeading>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+      <FromHeading font={font}>Settings</FromHeading>
       <TimeContainer>
-        <Heading>Time (Minutes)</Heading>
+        <Heading font={font}>Time (Minutes)</Heading>
         <TimeRow>
           <TimeType>
-            <TimeTypeHeading>pomodoro</TimeTypeHeading>
-            <NumericInput defaultValue={pomodoroTime} />
+            <TimeTypeHeading font={font}>pomodoro</TimeTypeHeading>
+            <NumericInput
+              defaultValue={pomodoroTime / 60}
+              register={register}
+              name={"pomodoro"}
+            />
           </TimeType>
           <TimeType>
-            <TimeTypeHeading>short break</TimeTypeHeading>
-            <NumericInput defaultValue={shortBreakTime} />
+            <TimeTypeHeading font={font}>short break</TimeTypeHeading>
+            <NumericInput
+              defaultValue={shortBreakTime / 60}
+              register={register}
+              name={"short"}
+            />
           </TimeType>
           <TimeType>
-            <TimeTypeHeading>long break</TimeTypeHeading>
-            <NumericInput defaultValue={longBreakTime} />
+            <TimeTypeHeading font={font}>long break</TimeTypeHeading>
+            <NumericInput
+              defaultValue={longBreakTime / 60}
+              register={register}
+              name={"long"}
+            />
           </TimeType>
         </TimeRow>
         <FontRow>
-          <Heading>Font</Heading>
+          <Heading font={font}>Font</Heading>
           <SelectFont>
-            <SelectFontButton selected={true}></SelectFontButton>
-            <SelectFontButton></SelectFontButton>
-            <SelectFontButton></SelectFontButton>
+            <ButtonBorder>
+              <SelectFontButton
+                selected={newFont === "first"}
+                type="first"
+                onClick={() => setNewFont("first")}
+              >
+                Aa
+              </SelectFontButton>
+            </ButtonBorder>
+            <ButtonBorder>
+              <SelectFontButton
+                selected={newFont === "second"}
+                type="second"
+                onClick={() => setNewFont("second")}
+              >
+                Aa
+              </SelectFontButton>
+            </ButtonBorder>
+            <ButtonBorder>
+              <SelectFontButton
+                selected={newFont === "third"}
+                type="third"
+                onClick={() => setNewFont("third")}
+              >
+                Aa
+              </SelectFontButton>
+            </ButtonBorder>
           </SelectFont>
         </FontRow>
         <ColorRow>
-          <Heading>Color</Heading>
+          <Heading font={font}>Color</Heading>
           <SelectFont>
-            <SelectColorButton color={"primary"}></SelectColorButton>
-            <SelectColorButton color={"secondary"}></SelectColorButton>
-            <SelectColorButton color={"tertiary"}></SelectColorButton>
+            <ButtonBorder>
+              <SelectColorButton
+                color={"primary"}
+                onClick={() => setNewTheme("primary")}
+              >
+                {newTheme === "primary" && <Tick src={TickIcon} />}
+              </SelectColorButton>
+            </ButtonBorder>
+            <ButtonBorder>
+              <SelectColorButton
+                color={"secondary"}
+                onClick={() => setNewTheme("secondary")}
+              >
+                {newTheme === "secondary" && <Tick src={TickIcon} />}
+              </SelectColorButton>
+            </ButtonBorder>
+            <ButtonBorder>
+              <SelectColorButton
+                color={"tertiary"}
+                onClick={() => setNewTheme("tertiary")}
+              >
+                {newTheme === "tertiary" && <Tick src={TickIcon} />}
+              </SelectColorButton>
+            </ButtonBorder>
           </SelectFont>
         </ColorRow>
       </TimeContainer>
-      <ApplyBtn theme={theme}>Apply</ApplyBtn>
+      <ApplyBtn theme={theme} type="submit" font={font}>
+        Apply
+      </ApplyBtn>
     </Form>
   );
 }

@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { fontFamiliy, fontWeights } from "../utils/fonts";
 
 const StyledInput = styled.input`
   &::-webkit-inner-spin-button {
@@ -17,15 +19,26 @@ const StyledInput = styled.input`
   background-color: var(--color-btn-background);
   padding: 0 1.6rem;
   font-size: 1.4rem;
-  font-weight: 700;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 
   &:focus {
     outline: none;
   }
 `;
 
-function NumericInput({ defaultValue }) {
-  return <StyledInput type="number" defaultValue={defaultValue}></StyledInput>;
+function NumericInput({ defaultValue, register, name }) {
+  const { font } = useSelector((state) => state.app);
+  return (
+    <StyledInput
+      type="number"
+      font={font}
+      defaultValue={defaultValue}
+      {...register(name, {
+        required: "This field is required",
+      })}
+    ></StyledInput>
+  );
 }
 
 export default NumericInput;

@@ -8,6 +8,7 @@ import {
   setShortCurrentTime,
   setLongCurrentTime,
 } from "../appSlice";
+import { fontFamiliy, fontWeights } from "../utils/fonts";
 
 const StyledSelectorContainer = styled.div`
   display: flex;
@@ -44,12 +45,13 @@ const SelectBtn = styled.div`
 
   background-color: ${(props) =>
     props.selected === true ? `${colors[props.theme]}` : "var(--color-dark)"};
-
   cursor: pointer;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 function ModeSelector() {
-  const { pomodoroTime, shortTime, longTime, active, theme, timerId } =
+  const { pomodoroTime, shortTime, longTime, active, theme, timerId, font } =
     useSelector((state) => state.app);
   const dispatch = useDispatch();
   function setActive(mode) {
@@ -75,6 +77,7 @@ function ModeSelector() {
           onClick={() => setActive("pomodoro")}
           selected={active === "pomodoro"}
           theme={theme}
+          font={font}
         >
           pomodoro
         </SelectBtn>
@@ -82,6 +85,7 @@ function ModeSelector() {
           onClick={() => setActive("short")}
           selected={active === "short"}
           theme={theme}
+          font={font}
         >
           short break
         </SelectBtn>
@@ -89,6 +93,7 @@ function ModeSelector() {
           onClick={() => setActive("long")}
           selected={active === "long"}
           theme={theme}
+          font={font}
         >
           long break
         </SelectBtn>

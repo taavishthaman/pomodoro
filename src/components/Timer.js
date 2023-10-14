@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import SettingsForm from "./SettingsForm";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../utils/colors";
+import { fontFamiliy, fontWeights } from "../utils/fonts";
 import { setPomodoroCurrentTime, setTimerState, setTimerId } from "../appSlice";
 
 const StyledTimerContainer = styled.div`
@@ -53,6 +54,8 @@ const StyledClock = styled.div`
   font-weight: 700;
   line-height: normal;
   letter-spacing: -5px;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 const StatusText = styled.div`
@@ -67,6 +70,8 @@ const StatusText = styled.div`
   &:hover {
     color: ${(props) => colors[props.theme]};
   }
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 const SettingsImg = styled.img`
@@ -185,7 +190,9 @@ function Timer() {
 }
 
 function Clock({ time, setTime }) {
-  const { pomodoroTime, timerState, theme } = useSelector((state) => state.app);
+  const { pomodoroTime, timerState, theme, font } = useSelector(
+    (state) => state.app
+  );
   const dispatch = useDispatch();
   const minutes = Math.floor(time / 60)
     .toString()
@@ -205,10 +212,10 @@ function Clock({ time, setTime }) {
   }
   return (
     <ClockContainer>
-      <StyledClock>
+      <StyledClock font={font}>
         {minutes}:{seconds}
       </StyledClock>
-      <StatusText theme={theme} onClick={handleTimer}>
+      <StatusText theme={theme} onClick={handleTimer} font={font}>
         {timerState === "paused" && "Start"}
         {timerState === "running" && "Pause"}
         {timerState === "finished" && "Restart"}

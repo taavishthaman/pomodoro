@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { fontFamiliy, fontWeights } from "../utils/fonts";
 
 const StyledHeader = styled.div`
   display: flex;
@@ -8,12 +10,15 @@ const StyledHeader = styled.div`
   color: var(--color-text-primary);
   font-size: 3.2rem;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
+  font-family: ${(props) => fontFamiliy[props.font]};
+  font-weight: ${(props) => fontWeights[props.font]};
 `;
 
 function Header() {
-  return <StyledHeader>pomodoro</StyledHeader>;
+  const { font } = useSelector((state) => state.app);
+
+  return <StyledHeader font={font}>pomodoro</StyledHeader>;
 }
 
 export default Header;
