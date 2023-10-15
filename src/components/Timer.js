@@ -48,6 +48,7 @@ const StyledTimerInner = styled.div`
   width: 36.6rem;
   border-radius: 36.6rem;
   background-color: var(--color-dark);
+  padding: 1.35rem;
   @media screen and (max-width: 31em) {
     height: 26.7rem;
     width: 26.7rem;
