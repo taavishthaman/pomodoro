@@ -12,6 +12,7 @@ const initialState = {
   theme: "primary",
   timerId: null,
   font: "first",
+  buzzer: new Audio(require("./assets/buzzer.mp3")),
 };
 
 const appSlice = createSlice({

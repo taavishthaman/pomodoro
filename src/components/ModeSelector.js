@@ -51,10 +51,21 @@ const SelectBtn = styled.div`
 `;
 
 function ModeSelector() {
-  const { pomodoroTime, shortTime, longTime, active, theme, timerId, font } =
-    useSelector((state) => state.app);
+  const {
+    pomodoroTime,
+    shortTime,
+    longTime,
+    active,
+    theme,
+    timerId,
+    font,
+    buzzer,
+  } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   function setActive(mode) {
+    //Disable the buzzer
+    buzzer.loop = false;
+    buzzer.pause();
     //If a timer is active disable it
     if (timerId) {
       clearInterval(timerId);

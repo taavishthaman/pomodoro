@@ -106,6 +106,10 @@ const SettingsImg = styled.img`
 `;
 
 function Timer() {
+  // let buzzer = useMemo(() => {
+  //   let audio = new Audio(require("../assets/buzzer.mp3"));
+  //   return audio;
+  // }, []);
   const {
     active,
     pomodoroTime,
@@ -117,6 +121,7 @@ function Timer() {
     timerState,
     timerId,
     theme,
+    buzzer,
   } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
@@ -166,6 +171,8 @@ function Timer() {
 
   useEffect(() => {
     if (timerState === "running" && !timerId) {
+      buzzer.loop = false;
+      buzzer.pause();
       const id = setInterval(() => {
         setTime((time) => {
           if (time === 1) {
@@ -181,11 +188,16 @@ function Timer() {
         dispatch(setTimerId(id));
       }
     } else if (timerState === "paused" && timerId) {
+      buzzer.loop = false;
+      buzzer.pause();
       clearInterval(timerId);
       dispatch(setTimerId(null));
       dispatch(setPomodoroCurrentTime(time));
+    } else if (timerState === "finished") {
+      buzzer.loop = true;
+      buzzer.play();
     }
-  }, [dispatch, pomodoroTime, time, timerId, timerState]);
+  }, [buzzer, dispatch, pomodoroTime, time, timerId, timerState]);
 
   return (
     <StyledTimerContainer>
